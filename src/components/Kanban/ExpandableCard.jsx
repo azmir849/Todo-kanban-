@@ -57,10 +57,19 @@ const ExpandableCard = ({title, items,onMoveItem, handleOpen}) => {
               }
             }
 
+            var color 
+              if(title ==='New'){
+                color = '#0000ff0d'
+              }else if(title ==='Done'){
+                color = '#0080000f'
+              }else{
+                color = '#ffa50014'
+              }
+
 
             return (
               <div key={index}>
-                <ListItem>
+                <ListItem sx={{borderRadius:'10px' ,marginTop:'10px', background:color}}>
                   <ListItemText
                     primary={
                       <>
