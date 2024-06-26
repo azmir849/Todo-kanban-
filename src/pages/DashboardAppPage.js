@@ -11,6 +11,7 @@ import DueTimeModal from 'src/components/Kanban/DueTimeModal';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
+  // initial state for todolists items
   const [items, setItems] = useState([
     { id: 1, title: 'Task 1', description: 'Description for Task 1', status: 'New',createdAt:'2024-06-27T18:40',dueDate:null },
     { id: 2, title: 'Task 2', description: 'This is the description for item 1 which is longer than fifty characters to demonstrate the read more and read less functionality.', status: 'New',createdAt:'2024-06-27T17:40',dueDate:null },
@@ -35,7 +36,7 @@ export default function DashboardAppPage() {
   const openDueTimeModal = () => setModalDueOpen(true);
   const closeDueTimeModal = () => setModalDueOpen(false);
 
-
+  // getCurrentDateTime function
   const getCurrentDateTime = () => {
     const now = new Date();
     const isoString = now.toISOString();
@@ -80,7 +81,7 @@ export default function DashboardAppPage() {
         </Typography>
       </Box>
        
-
+      {/* New Ongoing and Done column */}
         <Grid container spacing={2}>
           <Grid item lg={4} md={4} sm={12} xs={12}>
             <Column title="New"  items={getItemsByStatus('New')} handleOpen={handleOpen} onMoveItem={moveItem} />
@@ -93,7 +94,11 @@ export default function DashboardAppPage() {
           </Grid>
         </Grid>
       </Container>
+      
+      {/* dialog modal for create new item */}
       <FormModal open={modalOpen} handleClose={handleClose} handleSubmit={handleSubmit} />
+
+      {/* dialog modal for set due time */}
       <DueTimeModal open={modalDueOpen} handleClose={closeDueTimeModal} items={items} setItems={setItems} storeCurrentItem={storeCurrentItem} getCurrentDateTime={getCurrentDateTime} />
 
     </>

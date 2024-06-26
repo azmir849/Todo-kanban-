@@ -66,7 +66,7 @@ const ExpandableCard = ({title, items,onMoveItem, handleOpen}) => {
                       <>
                         {title ==='New' && <Typography style={{ color: 'blue' }}>{item.title}</Typography>}
                         {title ==='Ongoing' &&
-                          <Typography style={{ color: 'orange' }}>{item.title} {dueStatus === true && <Button sx={{ml:0.5}} style={{ color: 'red' }}>(Overdue)</Button>}</Typography>
+                          <Typography style={{ color: 'orange' }}>{item.title} {dueStatus === true && <><Button sx={{ml:0.5}} style={{ color: 'red' }}>(Overdue)</Button></>}</Typography>
                         }
                         {title ==='Done' && <Typography style={{ color: 'green' }}>{item.title}</Typography>}
                       </>
