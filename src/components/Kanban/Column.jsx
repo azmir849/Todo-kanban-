@@ -2,10 +2,10 @@
 import React from 'react';
 import ExpandableCard from './ExpandableCard';
 
-const Column = ({ title, items, handleOpen }) => {
+const Column = ({ title, items,onMoveItem, handleOpen }) => {
   return(
       <div className="column">
-        <ExpandableCard title={title} items={items} handleOpen={handleOpen} />
+        <ExpandableCard title={title} items={items} onMoveItem={onMoveItem} handleOpen={handleOpen} />
       </div>
   )
 };

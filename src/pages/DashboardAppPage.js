@@ -19,18 +19,7 @@ export default function DashboardAppPage() {
   const [newItemTitle, setNewItemTitle] = useState('');
   const [newItemDescription, setNewItemDescription] = useState('');
 
-  const addItem = () => {
-    setItems([
-      ...items,
-      { id: Date.now(), title: newItemTitle, description: newItemDescription, status: 'New' },
-    ]);
-    setNewItemTitle('');
-    setNewItemDescription('');
-  };
 
-  const moveItem = (id, newStatus) => {
-    setItems(items.map(item => item.id === id ? { ...item, status: newStatus } : item));
-  };
 
   const getItemsByStatus = (status) => items.filter(item => item.status === status);
 
@@ -42,13 +31,20 @@ export default function DashboardAppPage() {
   const handleClose = () => {
     setModalOpen(false);
   };
+  
+  //add item
   const handleSubmit = (task) => {
     setItems([
       ...items,
       { id: Date.now(), title: task.title, description: task.description, status: task.status },
     ]);
-    
   };
+
+  // move item
+  const moveItem = (id, newStatus) => {
+    setItems(items.map(item => item.id === id ? { ...item, status: newStatus } : item));
+  };
+
 
 
   return (

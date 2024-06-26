@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardActions, List, ListItem, ListItemText, IconButton, Button, Menu, MenuItem, Typography } from '@mui/material';
 import { ExpandMore, ExpandLess, MoreVert } from '@mui/icons-material';
 
-const ExpandableCard = ({title, items, handleOpen}) => {
+const ExpandableCard = ({title, items,onMoveItem, handleOpen}) => {
   const [expanded, setExpanded] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuIndex, setMenuIndex] = useState(null);
@@ -61,9 +61,9 @@ const ExpandableCard = ({title, items, handleOpen}) => {
                     open={menuIndex === index}
                     onClose={handleMenuClose}
                   >
-                    {title !== 'New' && <MenuItem onClick={handleMenuClose}>New</MenuItem>}
-                    {title !=='Ongoing' && <MenuItem onClick={handleMenuClose}>Ongoing</MenuItem>}
-                    {title !=='Done' && <MenuItem onClick={handleMenuClose}>Done</MenuItem>}
+                    {title !== 'New' && <MenuItem onClick={(e)=>{onMoveItem(item.id,'New');handleMenuClose()}}>New</MenuItem>}
+                    {title !=='Ongoing' && <MenuItem onClick={(e)=>{onMoveItem(item.id,'Ongoing');handleMenuClose()}}>Ongoing</MenuItem>}
+                    {title !=='Done' && <MenuItem onClick={(e)=>{onMoveItem(item.id,'Done');handleMenuClose()}}>Done</MenuItem>}
                   </Menu>
                 </ListItem>
               </div>
