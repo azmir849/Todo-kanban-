@@ -24,6 +24,11 @@ const ExpandableCard = ({title, items,onMoveItem, handleOpen}) => {
     setMenuIndex(null);
   };
 
+  const handleMenu =(item, type)=>{
+    onMoveItem(item,type)
+    handleMenuClose()
+  }
+
   return (
     <Card>
       <CardHeader
@@ -37,11 +42,35 @@ const ExpandableCard = ({title, items,onMoveItem, handleOpen}) => {
             const showDescription = expanded[index] || !isLongDescription;
             const description = showDescription ? item.description : item.description.substring(0, 50) + '...';
 
+            // for on going checking due or not
+            const isDue = (dueDateString) => {
+              const now = new Date();
+              const dueDate = new Date(dueDateString);
+              return dueDate < now;
+            };
+
+            var dueStatus = false
+            if(title ==='Ongoing' && item.dueDate !==null){
+              const dueDateString = item.dueDate;
+              if(isDue(dueDateString) ===true){
+                dueStatus = true
+              }
+            }
+
+
             return (
               <div key={index}>
                 <ListItem>
                   <ListItemText
-                    primary={item.title}
+                    primary={
+                      <>
+                        {title ==='New' && <Typography style={{ color: 'blue' }}>{item.title}</Typography>}
+                        {title ==='Ongoing' &&
+                          <Typography style={{ color: 'orange' }}>{item.title} {dueStatus === true && <Button sx={{ml:0.5}} style={{ color: 'red' }}>(Overdue)</Button>}</Typography>
+                        }
+                        {title ==='Done' && <Typography style={{ color: 'green' }}>{item.title}</Typography>}
+                      </>
+                    }
                     secondary={
                       <>
                         {description}
@@ -61,9 +90,9 @@ const ExpandableCard = ({title, items,onMoveItem, handleOpen}) => {
                     open={menuIndex === index}
                     onClose={handleMenuClose}
                   >
-                    {title !== 'New' && <MenuItem onClick={(e)=>{onMoveItem(item.id,'New');handleMenuClose()}}>New</MenuItem>}
-                    {title !=='Ongoing' && <MenuItem onClick={(e)=>{onMoveItem(item.id,'Ongoing');handleMenuClose()}}>Ongoing</MenuItem>}
-                    {title !=='Done' && <MenuItem onClick={(e)=>{onMoveItem(item.id,'Done');handleMenuClose()}}>Done</MenuItem>}
+                    {title !== 'New' && <MenuItem onClick={(e)=>handleMenu(item,'New')}>New</MenuItem>}
+                    {title !=='Ongoing' && <MenuItem onClick={(e)=>handleMenu(item,'Ongoing')}>Ongoing</MenuItem>}
+                    {title !=='Done' && <MenuItem onClick={(e)=>handleMenu(item,'Done')}>Done</MenuItem>}
                   </Menu>
                 </ListItem>
               </div>

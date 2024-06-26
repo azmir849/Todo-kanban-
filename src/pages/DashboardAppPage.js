@@ -4,6 +4,7 @@ import { Grid, Container, Typography, Box } from '@mui/material';
 import Column from 'src/components/Kanban/Column';
 import { useState } from 'react';
 import FormModal from 'src/components/Kanban/FormModal';
+import DueTimeModal from 'src/components/Kanban/DueTimeModal';
 // components
 
 
@@ -11,17 +12,13 @@ import FormModal from 'src/components/Kanban/FormModal';
 
 export default function DashboardAppPage() {
   const [items, setItems] = useState([
-    { id: 1, title: 'Task 1', description: 'Description for Task 1', status: 'New' },
-    { id: 2, title: 'Task 2', description: 'This is the description for item 1 which is longer than fifty characters to demonstrate the read more and read less functionality.', status: 'New' },
-    { id: 3, title: 'Task 3', description: 'Description for Task 3', status: 'Ongoing' },
-    { id: 4, title: 'Task 4', description: 'This is the description for item 1 which is longer than fifty characters to demonstrate the read more and read less functionality.', status: 'Done' },
+    { id: 1, title: 'Task 1', description: 'Description for Task 1', status: 'New',createdAt:'2024-06-27T18:40',dueDate:null },
+    { id: 2, title: 'Task 2', description: 'This is the description for item 1 which is longer than fifty characters to demonstrate the read more and read less functionality.', status: 'New',createdAt:'2024-06-27T17:40',dueDate:null },
+    { id: 3, title: 'Task 3', description: 'Description for Task 3', status: 'Ongoing',createdAt:'2024-06-27T16:40',dueDate:'2024-06-26T16:40' },
+    { id: 4, title: 'Task 4', description: 'This is the description for item 1 which is longer than fifty characters to demonstrate the read more and read less functionality.', status: 'Done',createdAt:'2024-06-27T15:40',dueDate:null },
   ]);
-  const [newItemTitle, setNewItemTitle] = useState('');
-  const [newItemDescription, setNewItemDescription] = useState('');
 
-
-
-  const getItemsByStatus = (status) => items.filter(item => item.status === status);
+  const getItemsByStatus = (status) => items.filter(item => item.status === status).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
   //For item creation modal 
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,21 +28,45 @@ export default function DashboardAppPage() {
   const handleClose = () => {
     setModalOpen(false);
   };
+
+  // for due date time modal
+  const [modalDueOpen, setModalDueOpen] = useState(false);
+  const [storeCurrentItem, setStoreCurrentItem] = useState(null)
+  const openDueTimeModal = () => setModalDueOpen(true);
+  const closeDueTimeModal = () => setModalDueOpen(false);
+
+
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const isoString = now.toISOString();
+    const date = isoString.split('T')[0]; // Extracts the date part
+    const time = isoString.split('T')[1].split(':'); // Extracts the time part
+    const formattedTime = `${time[0]}:${time[1]}`; // Formats as HH:MM
+    return `${date}T${formattedTime}`;
+  };
   
   //add item
   const handleSubmit = (task) => {
+    const now = getCurrentDateTime()
     setItems([
       ...items,
-      { id: Date.now(), title: task.title, description: task.description, status: task.status },
+      { id: Date.now(), title: task.title, description: task.description, status: task.status,createdAt: now},
     ]);
   };
 
+  
   // move item
-  const moveItem = (id, newStatus) => {
-    setItems(items.map(item => item.id === id ? { ...item, status: newStatus } : item));
+  const moveItem = (currentitem, newStatus) => {
+    //check onGoing or not
+    if(newStatus === 'Ongoing'){
+      setStoreCurrentItem(currentitem)
+      openDueTimeModal()
+    }else{
+      const now = getCurrentDateTime()
+      console.log('now', now)
+      setItems(items.map(item => item.id === currentitem.id ? { ...item, status: newStatus,createdAt: now } : item));
+    }
   };
-
-
 
   return (
     <>
@@ -74,6 +95,7 @@ export default function DashboardAppPage() {
         </Grid>
       </Container>
       <FormModal open={modalOpen} handleClose={handleClose} handleSubmit={handleSubmit} />
+      <DueTimeModal open={modalDueOpen} handleClose={closeDueTimeModal} items={items} setItems={setItems} storeCurrentItem={storeCurrentItem} getCurrentDateTime={getCurrentDateTime} />
 
     </>
   );
