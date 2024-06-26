@@ -13,9 +13,6 @@ const DueTimeModal = ({ open, handleClose,items, setItems,storeCurrentItem,getCu
       setSelectedDateAndTime(getCurrentDateTime())
       handleClose();
     };
-
-    console.log('selectedDateAndTime',selectedDateAndTime)
-
   return (
     <Dialog open={open}>
     <DialogTitle>Set Due Time</DialogTitle>

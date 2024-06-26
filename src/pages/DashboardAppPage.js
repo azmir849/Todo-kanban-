@@ -63,7 +63,6 @@ export default function DashboardAppPage() {
       openDueTimeModal()
     }else{
       const now = getCurrentDateTime()
-      console.log('now', now)
       setItems(items.map(item => item.id === currentitem.id ? { ...item, status: newStatus,createdAt: now } : item));
     }
   };
