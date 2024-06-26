@@ -1,7 +1,6 @@
 {
   "name": "todo",
-  "author": "azmir hoosen",
-  "licence": "MIT",
+  "author": "azmir hossen",
   "version": "1.7.0",
   "private": false,
   "scripts": {
